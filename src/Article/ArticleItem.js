@@ -17,7 +17,7 @@ const styles = {
 }
 
 export default function ArticleItem(props) {
-  const {removeTodo,toggleTodo} = useContext(Context) //Для того чтобы работать с функциями(контекстом), используем функцию useContext
+  const {removeArticle,toggleArticle} = useContext(Context) //Для того чтобы работать с функциями(контекстом), используем функцию useContext
   const classes = []  //removeTodo -- функции контекста, передаваемые из App
 
   if(props.article.completed) {
@@ -27,13 +27,13 @@ export default function ArticleItem(props) {
   return(
     <li style={styles.li}>
       <span className={classes.join(' ')}>
-        <input type='checkbox' checked={props.article.completed} style={styles.input} onChange={()=>toggleTodo(props.article.id)}></input>
+        <input type='checkbox' checked={props.article.completed} style={styles.input} onChange={()=>toggleArticle(props.article.id)}></input>
         <strong>{props.index + 1}</strong>
           &nbsp;
           {props.article.title}
       </span>
 
-    <button className='rm' onClick={()=> removeTodo(props.todo.id)}>&times;</button>
+    <button className='rm' onClick={()=> removeArticle(props.article.id)}>&times;</button>
     </li>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-//import ArticleItem from './Article/ArticleItem'
+import ArticleItem from './ArticleItem'
 import PropTypes from 'prop-types'
 
 
@@ -17,7 +17,7 @@ export default function ArticleList(props) {
       {props.articles.map((article, index) => { //Берем из пропсов объект todos, где todo -- элемент todos
         // console.log(props);
         // console.log(todo);
-        //return <ArticleItem  article={article} key={article.id} index={index} onChange={/*props.onToggle*/}/>
+        return <ArticleItem  article={article} key={article.id} index={index}/>
       })}
     </ul>
   )
