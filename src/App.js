@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { BrowserRouter, Route, Switch, Link} from 'react-router-dom'
 import TodoList from './Todo/TodoList'
 import Context from './context'
 import Loader from './Loader'
 import Modal from './Modal/Modal'
 import ArticleList from './Article/ArticleList'
+import Info from './Info/Info'
+import Todo from './Todo/Todo'
+
 
 function App() {
   // const [todos, setTodos] = React.useState([          //Используем деструктуризацию массива, аргумент UseState является начальным
@@ -18,9 +22,11 @@ function App() {
 
 
   const [loading, setLoading] = React.useState(true);
+  
 
   //Попробуем получить список статей со своей базы данных
   const [articles, setArticles] = React.useState([]);
+  const [todoLoading, setTodoLoading] = React.useState(true);
 
   useEffect(()=>{
     fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
@@ -28,9 +34,17 @@ function App() {
       .then(todos => {
         setTimeout(() => {
           setTodos(todos)
-          //setLoading(false)
+          setLoading(false)
         }, 2000) //setTimeout
       })
+    // fetch('http://api.akimgamm.ru/posts')
+    //   .then(response => response.json())
+    //   .then(articles => {
+    //     setTimeout(() => {
+    //       setArticles(articles)
+    //       setTodoLoading(false)
+    //     }, 10000) //setTimeout
+    //   })
   },[])
 
   
@@ -39,9 +53,11 @@ function App() {
       .then(response => response.json())
       .then(articles => {
         setTimeout(() => {
+          console.log(articles);
           setArticles(articles)
-          setLoading(false)
-        }, 5000) //setTimeout
+          setTodoLoading(false)
+        }, 2000) //setTimeout
+
       })
   },[])
 
@@ -84,27 +100,36 @@ function App() {
     }]))
   }
 
+
   return (//ReactSuspense для lazyloading                   //Value принимает в себя функции, позволяющие изменить начальное состояние UseState
-    <Context.Provider value={{ removeArticle, toggleArticle, removeTodo, toggleTodo }}> 
+    <BrowserRouter>
+      <Context.Provider value={{ removeArticle, toggleArticle, removeTodo, toggleTodo }}>
+      <Switch>
+        <Route exact path='/Info' component={Info}/>
+      </Switch> 
+        <div className="wrapper">
+          <h1>React tutorial</h1>
+          <ul>
+            <li><Link to='/Info'>Home</Link></li>
+          </ul>
+          <Modal />
+          <React.Suspense fallback={<Loader />}>
+            <AddTodo onCreate={addTodo} />
+          </React.Suspense>
 
+          {loading && <Loader />}
 
-    <div className="wrapper">
-      <h1>React tutorial</h1>
-      <Modal />
-      <React.Suspense fallback={<Loader />}>
-        <AddTodo onCreate={addTodo} />
-      </React.Suspense>
+          
+          {todos.length ? <TodoList todos={todos}/> : loading ? null : <div>Нет планов</div> }
+        </div>
+        <div className="wrapper">
+          <h1>Статьи</h1>
 
-      {loading && <Loader />}
-
-      
-      {todos.length ? <TodoList todos={todos}/> : loading ? null : <div>Нет планов</div> }
-      <h1>Статьи</h1>
-
-      {loading && <Loader />}
-      {articles.length ? <ArticleList articles={articles}/> : loading ? null : <div>Нет Статей</div>}
-    </div>
-    </Context.Provider>
+          {todoLoading && <Loader />}
+          {articles.length ? <ArticleList articles={articles}/> : todoLoading ? null : <div>Нет статей</div> /*endOfWrapper*/}
+        </div> 
+      </Context.Provider>
+    </BrowserRouter>
   );
 }
 

@@ -16,7 +16,11 @@ export default function ArticleList(props) {
     <ul>
       {props.articles.map((article, index) => { //Берем из пропсов объект todos, где todo -- элемент todos
         // console.log(props);
-        // console.log(todo);
+        if(article.completed === '1' || article.completed === 'true'){
+          article.completed = true
+        } else if(article.completed === '0' || article.completed === 'false') {
+          article.completed = false
+        }
         return <ArticleItem  article={article} key={article.id} index={index}/>
       })}
     </ul>

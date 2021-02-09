@@ -85,3 +85,16 @@ code {
     transform: translate(24px, 0);
   }
 }
+
+.todoInput {
+  align-items: center;
+  padding: 0.5rem 25%;
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.todoName {
+  margin-left: 25px;
+  padding: 10px 25px;
+}

@@ -17,10 +17,9 @@ export default function AddTodo(props) {
 
   return (     //Функция submitHandler вызывается по отправке формы и отменяет действие по дефолту
     <form onSubmit={submitHandler}>
-      <input value={value} onChange={event => setValue(event.target.value)}/>
-      <button type="submit">Add Todo</button>
+      <input className="todoInput" value={value} onChange={event => setValue(event.target.value)}/>
+      <button className="todoName" type="submit">Add Todo</button>
     </form>
-    
   )
 }
 
